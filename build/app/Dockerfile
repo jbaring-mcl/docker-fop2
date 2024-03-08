@@ -18,7 +18,7 @@ RUN apt-get update \
     && apt-get install -y apache2 php php-cli php-common php-json php-pdo php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-sqlite3 php-dev libmcrypt-dev \
     && apt-get -y autoremove \
     && apt-get clean \
-    && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+    && rm -rf /tmp/* /var/tmp/*
 
 ADD http://download2.fop2.com/fop2-2.31.39-debian-x86_64.tgz /usr/src/fop2.tgz
 
