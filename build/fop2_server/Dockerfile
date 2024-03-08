@@ -86,4 +86,4 @@ WORKDIR /usr/local/fop2
 
 ENTRYPOINT ["/usr/local/bin/docker-entrypoint.sh"]
 
-CMD /usr/local/fop2/fop2_server ${FOP2_STARTUP_OPTIONS}
+CMD ["/usr/local/fop2/fop2_server", "--licdir=/usr/share/fop2", "--dbdir=/var/lib/fop2"]

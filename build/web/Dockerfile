@@ -28,7 +28,7 @@ ENV DEBIAN_FRONTEND=noninteractive
 ADD http://download2.fop2.com/fop2-2.31.39-debian-x86_64.tgz /usr/src/fop2.tarz
 
 RUN apt -y update \
-    && apt -y install procps make net-tools curl vim default-mysql-client unzip msmtp tzdata \
+    && apt -y install procps make net-tools curl vim default-mysql-client unzip msmtp sqlite3 tzdata \
     && apt -y install php php-cli php-common php-dev php-pear libmcrypt-dev \
     && apt -y install php-cli php-json php-pdo php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-sqlite3\
     && rm -rf /var/lib/{apt,dpkg,cache,log}/
