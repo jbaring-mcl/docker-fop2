@@ -1,4 +1,5 @@
-FROM debian:10
+FROM debian:12
+
 LABEL maintainer="Nicolas Gudiño <ngudino@asternic.net> AND Federico Pereira <fpereira@iperfex.com>"
 LABEL description="Flash Operator Panel 2"
 LABEL url="https://www.fop2.com"
@@ -11,20 +12,20 @@ ENV APACHE_RUN_USER=www-data \
     APACHE_PID_FILE=/var/run/apache2.pid \
     APACHE_RUN_DIR=/var/run/apache2
 
-ENV MYSQL_HOST=localhost \
-    MYSQL_DATABASE_FOP2=fop2 \
-    MYSQL_USER=fop2 \
-    MYSQL_PASSWORD=fop2 \
+ENV MYSQL_HOST \
+    MYSQL_DATABASE_FOP2 \
+    MYSQL_USER \
+    MYSQL_PASSWORD \
+    MYSQL_PORT \
     FOP2_WEB_DBDIR=/var/lib/fop2/
 
-ENV MSMTP='false'
-ENV HTACCESS='false'
-ENV TIMEZONE='America/Argentina/Buenos_Aires'
+ENV MSMTP="false"
+ENV HTACCESS="false"
+ENV TIMEZONE="America/Chicago"
 ENV TZ=$TIMEZONE
 ENV DEBIAN_FRONTEND=noninteractive
 
-#ADD https://www.fop2.com/download/debian64 /usr/src/fop2.tarz
-ADD http://download.fop2.com/fop2-2.31.30-debian-x86_64.tgz  /usr/src/fop2.tarz
+ADD http://download2.fop2.com/fop2-2.31.39-debian-x86_64.tgz /usr/src/fop2.tarz
 
 RUN apt -y update \
     && apt -y install procps make net-tools curl vim default-mysql-client unzip msmtp tzdata \
@@ -34,8 +35,8 @@ RUN apt -y update \
 
 RUN pecl install mcrypt
 
-RUN echo "[mail function]" > /etc/php/7.3/mods-available/msmtprc.ini \
-    && echo "sendmail_path = \"/usr/bin/msmtp -t\"" >> /etc/php/7.3/mods-available/msmtprc.ini
+RUN echo "[mail function]" > /etc/php/8.2/mods-available/msmtprc.ini \
+    && echo "sendmail_path = \"/usr/bin/msmtp -t\"" >> /etc/php/8.2/mods-available/msmtprc.ini
 
 WORKDIR /usr/src
 
@@ -51,15 +52,15 @@ RUN tar -xzf /usr/src/fop2.tarz \
 
 RUN a2enmod ssl && a2enmod rewrite && a2dissite 000-default.conf default-ssl.conf \
     && rm -rf /etc/apache2/sites-available/000-default.conf /etc/apache2/sites-available/default-ssl.conf \
-    && sed -i 's/^ServerSignature/#ServerSignature/g' /etc/apache2/conf-enabled/security.conf \
-    && sed -i 's/^ServerTokens/#ServerTokens/g' /etc/apache2/conf-enabled/security.conf \
+    && sed -i "s/^ServerSignature/#ServerSignature/g" /etc/apache2/conf-enabled/security.conf \
+    && sed -i "s/^ServerTokens/#ServerTokens/g" /etc/apache2/conf-enabled/security.conf \
     && echo "ServerSignature Off" >> /etc/apache2/conf-enabled/security.conf \
     && echo "ServerTokens Prod" >> /etc/apache2/conf-enabled/security.conf
 
 COPY additionals/etc/apache2/sites-available/*.conf /etc/apache2/sites-available/
 COPY additionals/etc/apache2/sites-available/*.conf /etc/apache2/sites-enabled/
 COPY additionals/etc/apache2/options-ssl-apache.conf /etc/apache2/options-ssl-apache.conf
-COPY additionals/etc/php.d/fop2.ini /etc/php/7.3/mods-available/
+COPY additionals/etc/php.d/fop2.ini /etc/php/8.2/mods-available/
 
 WORKDIR /var/www/html/fop2
 

@@ -1,10 +1,11 @@
-FROM debian:10
+FROM debian:12
+
 LABEL maintainer="Nicolas Gudiño <ngudino@asternic.net> AND Federico Pereira <fpereira@iperfex.com>"
 LABEL description="Flash Operator Panel 2"
 LABEL url="https://www.fop2.com"
 LABEL github="https://github.com/asternic/docker-fop2"
 
-ENV FOP2_STARTUP_OPTIONS='--licdir=/usr/share/fop2  --dbdir=/var/lib/fop2' \
+ENV FOP2_STARTUP_OPTIONS="--licdir=/usr/share/fop2 --dbdir=/var/lib/fop2" \
     FOP2_AMI_HOST=localhost \
     FOP2_AMI_PORT=5038 \
     FOP2_AMI_USER=admin \
@@ -22,7 +23,7 @@ ENV FOP2_STARTUP_OPTIONS='--licdir=/usr/share/fop2  --dbdir=/var/lib/fop2' \
     FOP2_PERSISTENT_SPY=0 \
     FOP2_CONCEAL_SPIED_EXTENSION=1 \
     FOP2_IGNORE_CLID_ON_BRIDGE=0 \
-    FOP2_MONITOR_FILENAME='/var/spool/asterisk/monitor/${ORIG_EXTENSION}${DEST_EXTENSION}%h%i%s_${UNIQUEID}_${FOP2CONTEXT}' \
+    FOP2_MONITOR_FILENAME="/var/spool/asterisk/monitor/${ORIG_EXTENSION}${DEST_EXTENSION}%h%i%s_${UNIQUEID}_${FOP2CONTEXT}" \
     FOP2_MONITOR_FORMAT=wav \
     FOP2_MONITOR_MIX=true \
     FOP2_MONITOR_EXEC=/usr/local/fop2/recording_fop2.pl \
@@ -56,12 +57,11 @@ ENV MYSQL_USER \
     MYSQL_HOST \
     MYSQL_PORT
 
-ENV TIMEZONE='America/Argentina/Buenos_Aires'
+ENV TIMEZONE="America/Chicago"
 ENV TZ=$TIMEZONE
 ENV DEBIAN_FRONTEND=noninteractive
 
-ADD http://download.fop2.com/fop2-2.31.30-debian-x86_64.tgz  /usr/src/fop2.tarz
-#ADD https://www.fop2.com/download/debian64 /usr/src/fop2.tarz
+ADD http://download2.fop2.com/fop2-2.31.39-debian-x86_64.tgz /usr/src/fop2.tarz
 
 COPY docker-entrypoint.sh /usr/local/bin/docker-entrypoint.sh
 

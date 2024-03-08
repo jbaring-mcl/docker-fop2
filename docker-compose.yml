@@ -1,0 +1,46 @@
+version: "3"
+
+services:
+    db:
+        image: mysql:8.3
+        restart: unless-stopped
+        hostname: db
+        environment:
+            MYSQL_ROOT_PASSWORD: '${MYSQL_ROOT_PASSWORD}'
+            MYSQL_DATABASE: '${MYSQL_DATABASE}'
+            MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+        volumes:
+            - "db:/var/lib/mysql"
+
+    server:
+        build: 
+            context: ./build/fop2_server
+            dockerfile: Dockerfile
+        image: fop2/server:2.31.39
+        ports:
+            - "4445:4445"
+        environment:
+            MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+            MYSQL_DATABASE_FOP2: '${MYSQL_DATABASE}'
+            MYSQL_HOST: '${MYSQL_HOST}'
+            MYSQL_PORT: '${MYSQL_PORT}'
+
+    web:
+        build:
+            context: ./build/web
+            dockerfile: Dockerfile
+        image: fop2/web:2.31.39
+        ports:
+            - "8083:80"
+        environment:
+            MYSQL_USER: '${MYSQL_USER}'
+            MYSQL_PASSWORD: '${MYSQL_PASSWORD}'
+            MYSQL_DATABASE_FOP2: '${MYSQL_DATABASE}'
+            MYSQL_HOST: '${MYSQL_HOST}'
+            MYSQL_PORT: '${MYSQL_PORT}'
+
+volumes:
+  db:
+    driver: local
