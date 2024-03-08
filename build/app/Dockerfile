@@ -14,7 +14,7 @@ ENV MYSQL_USER \
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
 
 RUN apt-get update \
-    && apt-get install -y make net-tools curl mysql-client procps msmtp gettext-base tzdata gnupg gosu curl ca-certificates zip unzip git supervisor libcap2-bin libpng-dev dnsutils librsvg2-bin fswatch \
+    && apt-get install -y make net-tools curl mysql-client procps msmtp gettext-base tzdata gnupg gosu curl ca-certificates zip unzip git supervisor sqlite3 libcap2-bin libpng-dev dnsutils librsvg2-bin fswatch \
     && apt-get install -y apache2 php php-cli php-common php-json php-pdo php-mysql php-zip php-gd php-mbstring php-curl php-xml php-pear php-bcmath php-sqlite3 php-dev libmcrypt-dev \
     && apt-get -y autoremove \
     && apt-get clean \
